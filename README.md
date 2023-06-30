@@ -43,3 +43,38 @@ public class TestService {
     }
 }
 ```
+
+## Q & A
+
+### 报错 Caused by: org.springframework.core.io.buffer.DataBufferLimitException: Exceeded limit on max bytes to buffer : 262144
+
+```text
+Caused by: org.springframework.core.io.buffer.DataBufferLimitException: Exceeded limit on max bytes to buffer : 262144
+	at org.springframework.core.io.buffer.LimitedDataBufferList.raiseLimitException(LimitedDataBufferList.java:99)
+```
+
+具体参考 [https://www.baeldung.com/spring-webflux-databufferlimitexception](https://www.baeldung.com/spring-webflux-databufferlimitexception)
+
+本框架支持的方式如下：
+
+1. 自定义一个 `io.github.llnancy.webclient.core.ClientCodecConfigurerConsumer`
+
+    ```java
+        @Component
+        class MyClientCodecConfigurerConsumer implements ClientCodecConfigurerConsumer {
+    
+            @Override
+            public Consumer<ClientCodecConfigurer> consumer() {
+                return configurer -> configurer.defaultCodecs()
+                        .maxInMemorySize(500 * 1024);
+            }
+        }
+    ```
+
+2. 在 `@WebClient` 注解中指定 `codecConfigurerConsumer`
+
+    ```java
+    @WebClient(baseUrl = "https://lilu.org.cn", codecConfigurerConsumer = MyClientCodecConfigurerConsumer.class)
+    public interface MyWebClient {
+    }
+    ```

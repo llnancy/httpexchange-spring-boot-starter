@@ -20,4 +20,6 @@ import java.lang.annotation.Target;
 public @interface WebClient {
 
     String baseUrl() default "";
+
+    Class<? extends ClientCodecConfigurerConsumer> codecConfigurerConsumer() default ClientCodecConfigurerConsumer.class;
 }
