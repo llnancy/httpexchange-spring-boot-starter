@@ -1,4 +1,4 @@
-package io.github.llnancy.webclient.core;
+package io.github.llnancy.exchangeclient.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -15,23 +15,23 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * webclient scanner
+ * exchange client scanner
  *
  * @author llnancy admin@lilu.org.cn
  * @since JDK17 2023/6/29
  */
 @Slf4j
-public class ClassPathWebClientScanner extends ClassPathBeanDefinitionScanner {
+public class ClassPathExchangeClientScanner extends ClassPathBeanDefinitionScanner {
 
     private final ClassLoader classLoader;
 
-    public ClassPathWebClientScanner(BeanDefinitionRegistry registry, ClassLoader classLoader) {
+    public ClassPathExchangeClientScanner(BeanDefinitionRegistry registry, ClassLoader classLoader) {
         super(registry);
         this.classLoader = classLoader;
     }
 
     public void registerFilters() {
-        AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(WebClient.class);
+        AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(ExchangeClient.class);
         this.addIncludeFilter(annotationTypeFilter);
     }
 
@@ -40,7 +40,7 @@ public class ClassPathWebClientScanner extends ClassPathBeanDefinitionScanner {
     protected Set<BeanDefinitionHolder> doScan(@NonNull String... basePackages) {
         Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
         if (beanDefinitions.isEmpty()) {
-            log.warn("No WebClient was found in '" + Arrays.toString(basePackages)
+            log.warn("No ExchangeClient was found in '" + Arrays.toString(basePackages)
                     + "' package. Please check your configuration.");
         } else {
             processBeanDefinitions(beanDefinitions);
@@ -69,13 +69,13 @@ public class ClassPathWebClientScanner extends ClassPathBeanDefinitionScanner {
         for (BeanDefinitionHolder holder : beanDefinitions) {
             definition = (GenericBeanDefinition) holder.getBeanDefinition();
             if (log.isDebugEnabled()) {
-                log.debug("Creating WebClientBean with name '" + holder.getBeanName()
+                log.debug("Creating ExchangeClientBean with name '" + holder.getBeanName()
                         + "' and '" + definition.getBeanClassName() + "' Interface");
             }
             definition.getConstructorArgumentValues()
                     .addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
-            // beanClass 全部设置为 WebClientFactoryBean
-            definition.setBeanClass(WebClientFactoryBean.class);
+            // beanClass 全部设置为 ExchangeClientFactoryBean
+            definition.setBeanClass(ExchangeClientFactoryBean.class);
         }
     }
 }

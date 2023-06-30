@@ -1,4 +1,4 @@
-package io.github.llnancy.webclient.core;
+package io.github.llnancy.exchangeclient.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -17,13 +17,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * auto configure webclient scanner
+ * auto configure exchange client scanner
  *
  * @author llnancy admin@lilu.org.cn
  * @since JDK17 2023/6/29
  */
 @Slf4j
-public class AutoConfiguredWebClientScannerRegistrar implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanClassLoaderAware {
+public class AutoConfiguredExchangeClientScannerRegistrar implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanClassLoaderAware {
 
     private ClassLoader classLoader;
 
@@ -49,18 +49,17 @@ public class AutoConfiguredWebClientScannerRegistrar implements BeanFactoryAware
     @Override
     public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata, @NonNull BeanDefinitionRegistry registry) {
         if (!AutoConfigurationPackages.has(this.beanFactory)) {
-            log.warn("Could not determine auto-configuration package, automatic webclient scanning disabled.");
+            log.warn("Could not determine auto-configuration package, automatic exchange client scanning disabled.");
             return;
         }
         List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
-        // Scan the @WebClient annotated interface under the specified path and register it to the
-        // BeanDefinitionRegistry
-        ClassPathWebClientScanner scanner = new ClassPathWebClientScanner(registry, classLoader);
+        // Scan the @ExchangeClient annotated interface under the specified path and register it to the BeanDefinitionRegistry
+        ClassPathExchangeClientScanner scanner = new ClassPathExchangeClientScanner(registry, classLoader);
         if (resourceLoader != null) {
             scanner.setResourceLoader(resourceLoader);
         }
         String[] packageArr = packages.toArray(new String[0]);
-        log.info("Scan the @WebClient annotated interface using the auto-configuration package. packages={}", Arrays.toString(packageArr));
+        log.info("Scan the @ExchangeClient annotated interface using the auto-configuration package. packages={}", Arrays.toString(packageArr));
         scanner.registerFilters();
         // Scan and register to BeanDefinition
         scanner.doScan(packageArr);

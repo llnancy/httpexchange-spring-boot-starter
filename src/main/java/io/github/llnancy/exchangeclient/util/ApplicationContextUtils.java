@@ -1,4 +1,4 @@
-package io.github.llnancy.webclient.util;
+package io.github.llnancy.exchangeclient.util;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
  */
 @UtilityClass
 @Slf4j
-public final class AppContextUtils {
+public final class ApplicationContextUtils {
 
     /**
      * 优先从 Spring 容器获取实例，如果获取失败，调用无参方法创建，如果再失败，尝试调用无参 create 静态方法创建
@@ -20,7 +20,7 @@ public final class AppContextUtils {
      * @param context spring context
      * @param clazz   对象类型
      * @param <T>     泛型参数
-     * @return spring context实例，或者反射创建的实例。
+     * @return spring bean，或者反射创建的实例。
      */
     @SuppressWarnings("unchecked")
     public static <T> T getBeanOrReflect(ApplicationContext context, Class<T> clazz) {

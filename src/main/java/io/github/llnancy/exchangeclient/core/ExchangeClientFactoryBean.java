@@ -1,7 +1,7 @@
-package io.github.llnancy.webclient.core;
+package io.github.llnancy.exchangeclient.core;
 
-import io.github.llnancy.webclient.util.AppContextUtils;
-import io.github.llnancy.webclient.util.WebClientUtils;
+import io.github.llnancy.exchangeclient.util.ApplicationContextUtils;
+import io.github.llnancy.exchangeclient.util.ExchangeClientUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -20,26 +20,26 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import java.util.Objects;
 
 /**
- * webclient factory bean
+ * exchange client factory bean
  *
  * @author llnancy admin@lilu.org.cn
  * @since JDK17 2023/6/29
  */
-public class WebClientFactoryBean<T> implements FactoryBean<T>, EnvironmentAware, ApplicationContextAware {
+public class ExchangeClientFactoryBean<T> implements FactoryBean<T>, EnvironmentAware, ApplicationContextAware {
 
-    private final Class<T> webClientInterface;
+    private final Class<T> exchangeClientInterface;
 
     private Environment environment;
 
     private ApplicationContext applicationContext;
 
-    public WebClientFactoryBean(Class<T> webClientInterface) {
-        this.webClientInterface = webClientInterface;
+    public ExchangeClientFactoryBean(Class<T> exchangeClientInterface) {
+        this.exchangeClientInterface = exchangeClientInterface;
     }
 
     @Override
     public T getObject() throws Exception {
-        return createHttpServiceProxyFactory().createClient(webClientInterface);
+        return createHttpServiceProxyFactory().createClient(exchangeClientInterface);
     }
 
     private HttpServiceProxyFactory createHttpServiceProxyFactory() {
@@ -51,13 +51,13 @@ public class WebClientFactoryBean<T> implements FactoryBean<T>, EnvironmentAware
     }
 
     private WebClient createWebClient() {
-        io.github.llnancy.webclient.core.WebClient webClient =
-                AnnotatedElementUtils.findMergedAnnotation(webClientInterface, io.github.llnancy.webclient.core.WebClient.class);
-        String baseUrl = WebClientUtils.convertBaseUrl(Objects.requireNonNull(webClient).baseUrl(), environment);
-        Class<? extends ClientCodecConfigurerConsumer> clazz = webClient.codecConfigurerConsumer();
+        ExchangeClient exchangeClient =
+                AnnotatedElementUtils.findMergedAnnotation(exchangeClientInterface, ExchangeClient.class);
+        String baseUrl = ExchangeClientUtils.convertBaseUrl(Objects.requireNonNull(exchangeClient).baseUrl(), environment);
+        Class<? extends ClientCodecConfigurerConsumer> clazz = exchangeClient.codecConfigurerConsumer();
         ClientCodecConfigurerConsumer consumer = null;
         if (clazz != ClientCodecConfigurerConsumer.class) {
-            consumer = AppContextUtils.getBeanOrReflect(applicationContext, clazz);
+            consumer = ApplicationContextUtils.getBeanOrReflect(applicationContext, clazz);
         }
         WebClient.Builder builder = WebClient.builder()
                 .baseUrl(baseUrl)
@@ -74,7 +74,7 @@ public class WebClientFactoryBean<T> implements FactoryBean<T>, EnvironmentAware
 
     @Override
     public Class<?> getObjectType() {
-        return this.webClientInterface;
+        return this.exchangeClientInterface;
     }
 
     @Override

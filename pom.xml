@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>io.github.llnancy</groupId>
-    <artifactId>webclient-spring-boot-starter</artifactId>
+    <artifactId>exchangeclient-spring-boot-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>webclient-spring-boot-starter</name>
-    <description>webclient-spring-boot-starter</description>
+    <name>exchangeclient-spring-boot-starter</name>
+    <description>exchangeclient-spring-boot-starter</description>
     <properties>
         <java.version>17</java.version>
     </properties>

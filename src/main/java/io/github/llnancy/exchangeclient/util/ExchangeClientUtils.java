@@ -1,4 +1,4 @@
-package io.github.llnancy.webclient.util;
+package io.github.llnancy.exchangeclient.util;
 
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
  * @author llnancy admin@lilu.org.cn
  * @since JDK17 2023/6/29
  */
-public class WebClientUtils {
+public class ExchangeClientUtils {
 
     private static final String SUFFIX = "/";
 

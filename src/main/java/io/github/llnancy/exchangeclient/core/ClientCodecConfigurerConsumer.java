@@ -1,4 +1,4 @@
-package io.github.llnancy.webclient.core;
+package io.github.llnancy.exchangeclient.core;
 
 import org.springframework.http.codec.ClientCodecConfigurer;
 

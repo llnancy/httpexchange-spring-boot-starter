@@ -1,4 +1,4 @@
-# webclient-spring-boot-starter
+# exchangeclient-spring-boot-starter
 
 像 `@FeignClient` 和 `@RetrofitClient` 那样使用 `Spring Boot 3.x` 中的 `HTTP Interface`。
 
@@ -9,17 +9,17 @@
 ```xml
 <dependency>
     <groupId>io.github.llnancy</groupId>
-    <artifactId>webclient-spring-boot-starter</artifactId>
+    <artifactId>exchangeclient-spring-boot-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
 ### 定义 HTTP 接口
 
-**接口必须使用 `@io.github.llnancy.webclient.core.WebClient` 注解标记**！`HTTP` 相关注解可参考官方文档：[Spring 官方文档](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-http-interface-method-parameters)。
+**接口必须使用 `@io.github.llnancy.exchangeclient.core.ExchangeClient` 注解标记**！`HTTP` 相关注解可参考官方文档：[Spring 官方文档](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-http-interface-method-parameters)。
 
 ```java
-@WebClient(baseUrl = "${test.baseUrl}")
+@ExchangeClient(baseUrl = "${test.baseUrl}")
 public interface HttpApi {
 
     @PostExchange("/post")
@@ -57,7 +57,7 @@ Caused by: org.springframework.core.io.buffer.DataBufferLimitException: Exceeded
 
 本框架支持的方式如下：
 
-1. 自定义一个 `io.github.llnancy.webclient.core.ClientCodecConfigurerConsumer`
+1. 自定义一个 `io.github.llnancy.exchangeclient.core.ClientCodecConfigurerConsumer`
 
     ```java
         @Component
@@ -71,10 +71,10 @@ Caused by: org.springframework.core.io.buffer.DataBufferLimitException: Exceeded
         }
     ```
 
-2. 在 `@WebClient` 注解中指定 `codecConfigurerConsumer`
+2. 在 `@ExchangeClient` 注解中指定 `codecConfigurerConsumer`
 
     ```java
-    @WebClient(baseUrl = "https://lilu.org.cn", codecConfigurerConsumer = MyClientCodecConfigurerConsumer.class)
-    public interface MyWebClient {
+    @ExchangeClient(baseUrl = "https://lilu.org.cn", codecConfigurerConsumer = MyClientCodecConfigurerConsumer.class)
+    public interface MyExchangeClient {
     }
     ```

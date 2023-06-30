@@ -1,4 +1,4 @@
-package io.github.llnancy.webclient.core;
+package io.github.llnancy.exchangeclient.core;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * web client annotation
+ * exchange client annotation
  *
  * @author llnancy admin@lilu.org.cn
  * @since JDK17 2023/6/29
@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Documented
 @Inherited
-public @interface WebClient {
+public @interface ExchangeClient {
 
     String baseUrl() default "";
 
