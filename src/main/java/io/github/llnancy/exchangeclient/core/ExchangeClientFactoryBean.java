@@ -11,6 +11,7 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.lang.NonNull;
+import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -54,14 +55,21 @@ public class ExchangeClientFactoryBean<T> implements FactoryBean<T>, Environment
         ExchangeClient exchangeClient =
                 AnnotatedElementUtils.findMergedAnnotation(exchangeClientInterface, ExchangeClient.class);
         String baseUrl = ExchangeClientUtils.convertBaseUrl(Objects.requireNonNull(exchangeClient).baseUrl(), environment);
+        WebClient.Builder builder = WebClient.builder()
+                .baseUrl(baseUrl)
+                .defaultStatusHandler(HttpStatusCode::isError, ClientResponse::createException);
+        configureExchangeStrategies(exchangeClient, builder);
+        configureDefaultHeader(exchangeClient, builder);
+        configureDefaultHeaders(exchangeClient, builder);
+        return builder.build();
+    }
+
+    private void configureExchangeStrategies(ExchangeClient exchangeClient, WebClient.Builder builder) {
         Class<? extends ClientCodecConfigurerConsumer> clazz = exchangeClient.codecConfigurerConsumer();
         ClientCodecConfigurerConsumer consumer = null;
         if (clazz != ClientCodecConfigurerConsumer.class) {
             consumer = ApplicationContextUtils.getBeanOrReflect(applicationContext, clazz);
         }
-        WebClient.Builder builder = WebClient.builder()
-                .baseUrl(baseUrl)
-                .defaultStatusHandler(HttpStatusCode::isError, ClientResponse::createException);
         if (Objects.nonNull(consumer)) {
             builder.exchangeStrategies(
                     ExchangeStrategies.builder()
@@ -69,7 +77,25 @@ public class ExchangeClientFactoryBean<T> implements FactoryBean<T>, Environment
                             .build()
             );
         }
-        return builder.build();
+    }
+
+    private void configureDefaultHeader(ExchangeClient exchangeClient, WebClient.Builder builder) {
+        String headerKey = exchangeClient.defaultHeaderKey();
+        String[] headerValues = exchangeClient.defaultHeaderValues();
+        if (StringUtils.hasText(headerKey) && Objects.nonNull(headerValues) && headerValues.length != 0) {
+            builder.defaultHeader(headerKey, headerValues);
+        }
+    }
+
+    private void configureDefaultHeaders(ExchangeClient exchangeClient, WebClient.Builder builder) {
+        Class<? extends HttpHeadersConsumer> clazz = exchangeClient.httpHeadersConsumer();
+        HttpHeadersConsumer consumer = null;
+        if (clazz != HttpHeadersConsumer.class) {
+            consumer = ApplicationContextUtils.getBeanOrReflect(applicationContext, clazz);
+        }
+        if (Objects.nonNull(consumer)) {
+            builder.defaultHeaders(consumer.consumer());
+        }
     }
 
     @Override

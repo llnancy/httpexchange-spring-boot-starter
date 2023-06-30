@@ -21,5 +21,11 @@ public @interface ExchangeClient {
 
     String baseUrl() default "";
 
+    String defaultHeaderKey() default "";
+
+    String[] defaultHeaderValues() default {};
+
+    Class<? extends HttpHeadersConsumer> httpHeadersConsumer() default HttpHeadersConsumer.class;
+
     Class<? extends ClientCodecConfigurerConsumer> codecConfigurerConsumer() default ClientCodecConfigurerConsumer.class;
 }
