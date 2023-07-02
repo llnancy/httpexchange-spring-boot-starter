@@ -1,4 +1,4 @@
-# exchangeclient-spring-boot-starter
+# httpexchange-spring-boot-starter
 
 像 `@FeignClient` 和 `@RetrofitClient` 那样使用 `Spring Boot 3.x` 中的 `HTTP Interface`。
 
@@ -9,14 +9,14 @@
 ```xml
 <dependency>
     <groupId>io.github.llnancy</groupId>
-    <artifactId>exchangeclient-spring-boot-starter</artifactId>
+    <artifactId>httpexchange-spring-boot-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
 ### 定义 HTTP 接口
 
-**接口必须使用 `@io.github.llnancy.exchangeclient.core.ExchangeClient` 注解标记**！`HTTP` 相关注解可参考官方文档：[Spring 官方文档](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-http-interface-method-parameters)。
+**接口必须使用 `@io.github.llnancy.httpexchange.core.ExchangeClient` 注解标记**！`HTTP` 相关注解可参考官方文档：[Spring 官方文档](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-http-interface-method-parameters)。
 
 ```java
 @ExchangeClient(baseUrl = "${test.baseUrl}")
@@ -57,7 +57,7 @@ Caused by: org.springframework.core.io.buffer.DataBufferLimitException: Exceeded
 
 本框架支持的方式如下：
 
-1. 自定义一个 `io.github.llnancy.exchangeclient.core.ClientCodecConfigurerConsumer`
+1. 自定义一个 `io.github.llnancy.httpexchange.core.ClientCodecConfigurerConsumer`
 
     ```java
         @Component

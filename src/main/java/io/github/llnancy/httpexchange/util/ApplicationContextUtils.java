@@ -1,4 +1,4 @@
-package io.github.llnancy.exchangeclient.util;
+package io.github.llnancy.httpexchange.util;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

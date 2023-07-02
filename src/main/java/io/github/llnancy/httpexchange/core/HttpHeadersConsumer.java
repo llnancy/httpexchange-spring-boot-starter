@@ -1,4 +1,4 @@
-package io.github.llnancy.exchangeclient.core;
+package io.github.llnancy.httpexchange.core;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;

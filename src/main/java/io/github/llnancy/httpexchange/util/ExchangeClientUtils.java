@@ -1,4 +1,4 @@
-package io.github.llnancy.exchangeclient.util;
+package io.github.llnancy.httpexchange.util;
 
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;

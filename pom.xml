@@ -9,14 +9,31 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>io.github.llnancy</groupId>
-    <artifactId>exchangeclient-spring-boot-starter</artifactId>
+    <artifactId>httpexchange-spring-boot-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>exchangeclient-spring-boot-starter</name>
-    <description>exchangeclient-spring-boot-starter</description>
+    <name>httpexchange-spring-boot-starter</name>
+    <description>httpexchange-spring-boot-starter</description>
     <properties>
         <java.version>17</java.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-commons-dependencies</artifactId>
+				<version>4.0.3</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
+        <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-context</artifactId>
+			<optional>true</optional>
+		</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>

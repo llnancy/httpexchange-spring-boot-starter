@@ -1,1 +1,1 @@
-io.github.llnancy.exchangeclient.config.ExchangeClientAutoConfiguration
+io.github.llnancy.httpexchange.config.ExchangeClientAutoConfiguration

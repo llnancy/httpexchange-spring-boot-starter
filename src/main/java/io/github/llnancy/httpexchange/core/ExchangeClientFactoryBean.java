@@ -1,7 +1,7 @@
-package io.github.llnancy.exchangeclient.core;
+package io.github.llnancy.httpexchange.core;
 
-import io.github.llnancy.exchangeclient.util.ApplicationContextUtils;
-import io.github.llnancy.exchangeclient.util.ExchangeClientUtils;
+import io.github.llnancy.httpexchange.util.ApplicationContextUtils;
+import io.github.llnancy.httpexchange.util.ExchangeClientUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -28,11 +28,14 @@ import java.util.Objects;
  */
 public class ExchangeClientFactoryBean<T> implements FactoryBean<T>, EnvironmentAware, ApplicationContextAware {
 
-    private final Class<T> exchangeClientInterface;
+    private Class<T> exchangeClientInterface;
 
     private Environment environment;
 
     private ApplicationContext applicationContext;
+
+    public ExchangeClientFactoryBean() {
+    }
 
     public ExchangeClientFactoryBean(Class<T> exchangeClientInterface) {
         this.exchangeClientInterface = exchangeClientInterface;
