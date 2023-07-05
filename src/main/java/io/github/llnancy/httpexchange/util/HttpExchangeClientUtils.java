@@ -1,5 +1,6 @@
 package io.github.llnancy.httpexchange.util;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
@@ -9,7 +10,8 @@ import org.springframework.util.StringUtils;
  * @author llnancy admin@lilu.org.cn
  * @since JDK17 2023/6/29
  */
-public class ExchangeClientUtils {
+@UtilityClass
+public class HttpExchangeClientUtils {
 
     private static final String SUFFIX = "/";
 

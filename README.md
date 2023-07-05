@@ -78,3 +78,7 @@ Caused by: org.springframework.core.io.buffer.DataBufferLimitException: Exceeded
     public interface MyExchangeClient {
     }
     ```
+
+### 支持编译为 `native` 镜像吗？
+
+支持。

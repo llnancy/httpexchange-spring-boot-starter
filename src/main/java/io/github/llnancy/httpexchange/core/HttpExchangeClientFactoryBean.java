@@ -1,7 +1,7 @@
 package io.github.llnancy.httpexchange.core;
 
 import io.github.llnancy.httpexchange.util.ApplicationContextUtils;
-import io.github.llnancy.httpexchange.util.ExchangeClientUtils;
+import io.github.llnancy.httpexchange.util.HttpExchangeClientUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -10,7 +10,6 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -21,29 +20,34 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import java.util.Objects;
 
 /**
- * exchange client factory bean
+ * http exchange client factory bean
  *
  * @author llnancy admin@lilu.org.cn
  * @since JDK17 2023/6/29
  */
-public class ExchangeClientFactoryBean<T> implements FactoryBean<T>, EnvironmentAware, ApplicationContextAware {
+@SuppressWarnings("NullableProblems")
+public class HttpExchangeClientFactoryBean<T> implements FactoryBean<T>, EnvironmentAware, ApplicationContextAware {
 
-    private Class<T> exchangeClientInterface;
+    private Class<T> httpExchangeClientInterface;
 
     private Environment environment;
 
     private ApplicationContext applicationContext;
 
-    public ExchangeClientFactoryBean() {
+    public HttpExchangeClientFactoryBean() {
     }
 
-    public ExchangeClientFactoryBean(Class<T> exchangeClientInterface) {
-        this.exchangeClientInterface = exchangeClientInterface;
+    public HttpExchangeClientFactoryBean(Class<T> httpExchangeClientInterface) {
+        this.httpExchangeClientInterface = httpExchangeClientInterface;
+    }
+
+    public void setHttpExchangeClientInterface(Class<T> httpExchangeClientInterface) {
+        this.httpExchangeClientInterface = httpExchangeClientInterface;
     }
 
     @Override
-    public T getObject() throws Exception {
-        return createHttpServiceProxyFactory().createClient(exchangeClientInterface);
+    public T getObject() {
+        return createHttpServiceProxyFactory().createClient(httpExchangeClientInterface);
     }
 
     private HttpServiceProxyFactory createHttpServiceProxyFactory() {
@@ -55,20 +59,19 @@ public class ExchangeClientFactoryBean<T> implements FactoryBean<T>, Environment
     }
 
     private WebClient createWebClient() {
-        ExchangeClient exchangeClient =
-                AnnotatedElementUtils.findMergedAnnotation(exchangeClientInterface, ExchangeClient.class);
-        String baseUrl = ExchangeClientUtils.convertBaseUrl(Objects.requireNonNull(exchangeClient).baseUrl(), environment);
+        HttpExchangeClient httpExchangeClient = AnnotatedElementUtils.findMergedAnnotation(httpExchangeClientInterface, HttpExchangeClient.class);
+        String baseUrl = HttpExchangeClientUtils.convertBaseUrl(Objects.requireNonNull(httpExchangeClient).baseUrl(), environment);
         WebClient.Builder builder = WebClient.builder()
                 .baseUrl(baseUrl)
                 .defaultStatusHandler(HttpStatusCode::isError, ClientResponse::createException);
-        configureExchangeStrategies(exchangeClient, builder);
-        configureDefaultHeader(exchangeClient, builder);
-        configureDefaultHeaders(exchangeClient, builder);
+        configureExchangeStrategies(httpExchangeClient, builder);
+        configureDefaultHeader(httpExchangeClient, builder);
+        configureDefaultHeaders(httpExchangeClient, builder);
         return builder.build();
     }
 
-    private void configureExchangeStrategies(ExchangeClient exchangeClient, WebClient.Builder builder) {
-        Class<? extends ClientCodecConfigurerConsumer> clazz = exchangeClient.codecConfigurerConsumer();
+    private void configureExchangeStrategies(HttpExchangeClient httpExchangeClient, WebClient.Builder builder) {
+        Class<? extends ClientCodecConfigurerConsumer> clazz = httpExchangeClient.codecConfigurerConsumer();
         ClientCodecConfigurerConsumer consumer = null;
         if (clazz != ClientCodecConfigurerConsumer.class) {
             consumer = ApplicationContextUtils.getBeanOrReflect(applicationContext, clazz);
@@ -82,16 +85,16 @@ public class ExchangeClientFactoryBean<T> implements FactoryBean<T>, Environment
         }
     }
 
-    private void configureDefaultHeader(ExchangeClient exchangeClient, WebClient.Builder builder) {
-        String headerKey = exchangeClient.defaultHeaderKey();
-        String[] headerValues = exchangeClient.defaultHeaderValues();
+    private void configureDefaultHeader(HttpExchangeClient httpExchangeClient, WebClient.Builder builder) {
+        String headerKey = httpExchangeClient.defaultHeaderKey();
+        String[] headerValues = httpExchangeClient.defaultHeaderValues();
         if (StringUtils.hasText(headerKey) && Objects.nonNull(headerValues) && headerValues.length != 0) {
             builder.defaultHeader(headerKey, headerValues);
         }
     }
 
-    private void configureDefaultHeaders(ExchangeClient exchangeClient, WebClient.Builder builder) {
-        Class<? extends HttpHeadersConsumer> clazz = exchangeClient.httpHeadersConsumer();
+    private void configureDefaultHeaders(HttpExchangeClient httpExchangeClient, WebClient.Builder builder) {
+        Class<? extends HttpHeadersConsumer> clazz = httpExchangeClient.httpHeadersConsumer();
         HttpHeadersConsumer consumer = null;
         if (clazz != HttpHeadersConsumer.class) {
             consumer = ApplicationContextUtils.getBeanOrReflect(applicationContext, clazz);
@@ -103,16 +106,16 @@ public class ExchangeClientFactoryBean<T> implements FactoryBean<T>, Environment
 
     @Override
     public Class<?> getObjectType() {
-        return this.exchangeClientInterface;
+        return this.httpExchangeClientInterface;
     }
 
     @Override
-    public void setEnvironment(@NonNull Environment environment) {
+    public void setEnvironment(Environment environment) {
         this.environment = environment;
     }
 
     @Override
-    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 }

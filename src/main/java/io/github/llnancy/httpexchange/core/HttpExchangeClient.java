@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * exchange client annotation
+ * http exchange client annotation
  *
  * @author llnancy admin@lilu.org.cn
  * @since JDK17 2023/6/29
@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Documented
 @Inherited
-public @interface ExchangeClient {
+public @interface HttpExchangeClient {
 
     String baseUrl() default "";
 
