@@ -1,0 +1,70 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+def isRelease = !version.toString().endsWith("-SNAPSHOT")
+def github = 'https://github.com/llnancy/httpexchange-spring-boot-starter'
+
+publishing {
+    publications.create('mavenJava', MavenPublication) {
+        from components.java
+
+        // @see https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven:resolved_dependencies
+        versionMapping {
+            usage('java-api') {
+                fromResolutionOf('runtimeClasspath')
+            }
+            usage('java-runtime') {
+                fromResolutionResult()
+            }
+        }
+
+        pom {
+            name.set(rootProject.name)
+            description.set(project.description)
+            url.set(github)
+            scm {
+                url = github
+                connection = "scm:git:${github}.git"
+                developerConnection = "scm:git:${github}.git"
+            }
+            developers {
+                developer {
+                    name.set('llnancy')
+                    email.set('admin@lilu.org.cn')
+                    url.set('https://lilu.org.cn')
+                }
+            }
+            licenses {
+                license {
+                    name.set('Apache License, Version 2.0')
+                    url.set('https://www.apache.org/licenses/LICENSE-2.0')
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'OSSRH'
+            credentials {
+                username findProperty('ossrh.username').toString() ?: System.getenv('OSSRH_USERNAME')
+                password findProperty('ossrh.password').toString() ?: System.getenv('OSSRH_PASSWORD')
+            }
+            url isRelease
+                    ? 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                    : 'https://s01.oss.sonatype.org/content/repositories/snapshots'
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign).configureEach {
+    onlyIf { isRelease }
+}

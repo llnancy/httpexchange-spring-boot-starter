@@ -39,21 +39,40 @@ public class ClassPathHttpExchangeClientScanner extends ClassPathBeanDefinitionS
 
     private String defaultScope;
 
+    /**
+     * set class of {@link HttpExchangeClientFactoryBean}
+     *
+     * @param httpExchangeClientFactoryBeanClass class of {@link HttpExchangeClientFactoryBean}
+     */
     @SuppressWarnings("rawtypes")
     public void setHttpExchangeClientFactoryBeanClass(Class<? extends HttpExchangeClientFactoryBean> httpExchangeClientFactoryBeanClass) {
         this.httpExchangeClientFactoryBeanClass = httpExchangeClientFactoryBeanClass == null ? HttpExchangeClientFactoryBean.class : httpExchangeClientFactoryBeanClass;
     }
 
+    /**
+     * set default scope
+     *
+     * @param defaultScope default scope string
+     */
     public void setDefaultScope(String defaultScope) {
         this.defaultScope = defaultScope;
     }
 
+    /**
+     * constructor
+     *
+     * @param registry    {@link BeanDefinitionRegistry}
+     * @param classLoader {@link ClassLoader}
+     */
     public ClassPathHttpExchangeClientScanner(BeanDefinitionRegistry registry, ClassLoader classLoader) {
         super(registry);
         this.classLoader = classLoader;
         setIncludeAnnotationConfig(!AotDetector.useGeneratedArtifacts());
     }
 
+    /**
+     * register @HttpExchangeClient filter
+     */
     public void registerFilters() {
         AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(HttpExchangeClient.class);
         this.addIncludeFilter(annotationTypeFilter);

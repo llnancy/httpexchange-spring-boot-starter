@@ -29,6 +29,9 @@ import org.springframework.util.ClassUtils;
 @Slf4j
 public class HttpExchangeClientAutoConfiguration {
 
+    /**
+     * auto configured http exchange client scanner
+     */
     @Configuration
     @Import({AutoConfiguredHttpExchangeClientScannerRegistrar.class})
     @ConditionalOnMissingBean(HttpExchangeClientFactoryBean.class)

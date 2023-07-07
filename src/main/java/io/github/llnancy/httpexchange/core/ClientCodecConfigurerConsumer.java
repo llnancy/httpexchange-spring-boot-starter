@@ -12,5 +12,10 @@ import java.util.function.Consumer;
  */
 public interface ClientCodecConfigurerConsumer {
 
+    /**
+     * hold a consumer of {@link ClientCodecConfigurer}
+     *
+     * @return {@link Consumer<ClientCodecConfigurer>}
+     */
     Consumer<ClientCodecConfigurer> consumer();
 }

@@ -15,6 +15,13 @@ public class HttpExchangeClientUtils {
 
     private static final String SUFFIX = "/";
 
+    /**
+     * convert base url
+     *
+     * @param baseUrl     source baseUrl
+     * @param environment {@link Environment}
+     * @return target baseUrl
+     */
     public static String convertBaseUrl(String baseUrl, Environment environment) {
         if (StringUtils.hasText(baseUrl)) {
             baseUrl = environment.resolveRequiredPlaceholders(baseUrl);

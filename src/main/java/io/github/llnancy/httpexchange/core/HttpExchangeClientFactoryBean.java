@@ -34,13 +34,26 @@ public class HttpExchangeClientFactoryBean<T> implements FactoryBean<T>, Environ
 
     private ApplicationContext applicationContext;
 
+    /**
+     * default constructor
+     */
     public HttpExchangeClientFactoryBean() {
     }
 
+    /**
+     * constructor with httpExchangeClientInterface
+     *
+     * @param httpExchangeClientInterface the interface class annotated by {@link HttpExchangeClient}
+     */
     public HttpExchangeClientFactoryBean(Class<T> httpExchangeClientInterface) {
         this.httpExchangeClientInterface = httpExchangeClientInterface;
     }
 
+    /**
+     * set the httpExchangeClientInterface
+     *
+     * @param httpExchangeClientInterface the interface class annotated by {@link HttpExchangeClient}
+     */
     public void setHttpExchangeClientInterface(Class<T> httpExchangeClientInterface) {
         this.httpExchangeClientInterface = httpExchangeClientInterface;
     }

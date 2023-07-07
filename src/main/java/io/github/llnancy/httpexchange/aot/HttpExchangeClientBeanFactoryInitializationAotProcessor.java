@@ -40,6 +40,11 @@ public class HttpExchangeClientBeanFactoryInitializationAotProcessor implements 
 
     private final BindingReflectionHintsRegistrar bindingRegistrar = new BindingReflectionHintsRegistrar();
 
+    /**
+     * constructor
+     *
+     * @param context {@link GenericApplicationContext}
+     */
     public HttpExchangeClientBeanFactoryInitializationAotProcessor(GenericApplicationContext context) {
         this.context = context;
         this.httpExchangeClientBeanDefinitions = getHttpExchangeClientBeanDefinitions();
@@ -99,12 +104,24 @@ public class HttpExchangeClientBeanFactoryInitializationAotProcessor implements 
         registerReturnTypeHints(hints, MethodParameter.forExecutable(method, -1));
     }
 
+    /**
+     * register type hints for return type
+     *
+     * @param hints               {@link ReflectionHints}
+     * @param returnTypeParameter {@link MethodParameter}
+     */
     protected void registerReturnTypeHints(ReflectionHints hints, MethodParameter returnTypeParameter) {
         if (!void.class.equals(returnTypeParameter.getParameterType())) {
             this.bindingRegistrar.registerReflectionHints(hints, returnTypeParameter.getGenericParameterType());
         }
     }
 
+    /**
+     * register type hints for parameters annotated with @RequestBody
+     *
+     * @param hints           {@link ReflectionHints}
+     * @param methodParameter {@link MethodParameter}
+     */
     protected void registerParameterTypeHints(ReflectionHints hints, MethodParameter methodParameter) {
         if (methodParameter.hasParameterAnnotation(RequestBody.class)) {
             this.bindingRegistrar.registerReflectionHints(hints, methodParameter.getGenericParameterType());

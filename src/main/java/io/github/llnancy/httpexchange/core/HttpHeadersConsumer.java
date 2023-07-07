@@ -13,5 +13,10 @@ import java.util.function.Consumer;
  */
 public interface HttpHeadersConsumer {
 
+    /**
+     * hold a consumer of {@link HttpHeaders}
+     *
+     * @return {@link Consumer<HttpHeaders>}
+     */
     Consumer<HttpHeaders> consumer();
 }
