@@ -1,5 +1,10 @@
 # httpexchange-spring-boot-starter
 
+[![Build](https://img.shields.io/github/actions/workflow/status/llnancy/httpexchange-spring-boot-starter/build.yml?branch=master)](https://github.com/llnancy/httpexchange-spring-boot-starter/actions)
+[![JDK Version](https://img.shields.io/badge/JDK-17-0e83c)](https://www.oracle.com/java/technologies/javase/17all-relnotes.html)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.llnancy/httpexchange-spring-boot-starter)](https://search.maven.org/artifact/io.github.llnancy/httpexchange-spring-boot-starter)
+[![License: Apache-2.0](https://img.shields.io/github/license/llnancy/httpexchange-spring-boot-starter?color=FF5531)](https://opensource.org/license/apache-2-0/)
+
 像 `@FeignClient` 和 `@RetrofitClient` 那样使用 `Spring Boot 3.x` 中的 `HTTP Interface`。
 
 ## 快速开始
@@ -10,7 +15,7 @@
 <dependency>
     <groupId>io.github.llnancy</groupId>
     <artifactId>httpexchange-spring-boot-starter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 </dependency>
 ```
 
@@ -82,3 +87,9 @@ Caused by: org.springframework.core.io.buffer.DataBufferLimitException: Exceeded
 ### 支持编译为 `native` 镜像吗？
 
 支持。
+
+## License
+
+[Apache License 2.0](https://github.com/llnancy/httpexchange-spring-boot-starter/blob/master/LICENSE)
+
+Copyright (c) 2023-present llnancy
