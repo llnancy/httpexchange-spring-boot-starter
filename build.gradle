@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.llnancy'
-version = '0.0.1'
+version = '0.0.2'
 description = 'An enhancement to the Spring Boot 3.x HTTP Interface, using the HTTP Interface in Spring Boot 3.x like using &#64;FeignClient and &#64;RetrofitClient.'
 
 java {
