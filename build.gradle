@@ -2,12 +2,12 @@ import java.nio.charset.StandardCharsets
 
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.1.1'
+    id 'org.springframework.boot' version '3.3.0'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group = 'io.github.llnancy'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.4-SNAPSHOT'
 description = 'An enhancement to the Spring Boot 3.x HTTP Interface, using the HTTP Interface in Spring Boot 3.x like using &#64;FeignClient and &#64;RetrofitClient.'
 
 java {

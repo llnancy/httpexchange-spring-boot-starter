@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * {@link WebClient.Builder#defaultHeaders(Consumer)} holder
  *
  * @author llnancy admin@lilu.org.cn
- * @since JDK8 2023/7/1
+ * @since JDK17 2023/7/1
  */
 public interface HttpHeadersConsumer {
 
@@ -18,5 +18,5 @@ public interface HttpHeadersConsumer {
      *
      * @return {@link Consumer<HttpHeaders>}
      */
-    Consumer<HttpHeaders> consumer();
+    Consumer<HttpHeaders> consume();
 }

@@ -1,5 +1,6 @@
 package io.github.llnancy.httpexchange.core;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.scope.ScopedProxyFactoryBean;
 import org.springframework.aop.scope.ScopedProxyUtils;
@@ -37,6 +38,10 @@ public class ClassPathHttpExchangeClientScanner extends ClassPathBeanDefinitionS
     @SuppressWarnings("rawtypes")
     private Class<? extends HttpExchangeClientFactoryBean> httpExchangeClientFactoryBeanClass = HttpExchangeClientFactoryBean.class;
 
+    /**
+     * set default scope
+     */
+    @Setter
     private String defaultScope;
 
     /**
@@ -47,15 +52,6 @@ public class ClassPathHttpExchangeClientScanner extends ClassPathBeanDefinitionS
     @SuppressWarnings("rawtypes")
     public void setHttpExchangeClientFactoryBeanClass(Class<? extends HttpExchangeClientFactoryBean> httpExchangeClientFactoryBeanClass) {
         this.httpExchangeClientFactoryBeanClass = httpExchangeClientFactoryBeanClass == null ? HttpExchangeClientFactoryBean.class : httpExchangeClientFactoryBeanClass;
-    }
-
-    /**
-     * set default scope
-     *
-     * @param defaultScope default scope string
-     */
-    public void setDefaultScope(String defaultScope) {
-        this.defaultScope = defaultScope;
     }
 
     /**
@@ -127,13 +123,14 @@ public class ClassPathHttpExchangeClientScanner extends ClassPathBeanDefinitionS
             definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName);
             Assert.notNull(beanClassName, "beanClassName must not be null.");
             try {
-                definition.getPropertyValues().add("httpExchangeClientInterface", ClassUtils.forName(beanClassName, classLoader));
+                Class<?> clazz = ClassUtils.forName(beanClassName, classLoader);
+                definition.getPropertyValues().add("httpExchangeClientInterface", clazz);
+                // Attribute for MockitoPostProcessor
+                definition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, clazz);
             } catch (ClassNotFoundException ignore) {
                 // ignore
             }
             definition.setBeanClass(this.httpExchangeClientFactoryBeanClass);
-            // Attribute for MockitoPostProcessor
-            definition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
 
             if (scopedProxy) {
                 continue;
